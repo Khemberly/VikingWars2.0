@@ -133,7 +133,8 @@ public class GameServer implements Runnable, Constants{
 							game.update(tokens[1].trim(),player);
 							broadcast("CONNECTED "+tokens[1]);
 							playerCount++;
-							if (playerCount==numPlayers){
+							System.out.println(playerCount);
+							if (playerCount>=numPlayers){
 								gameStage=GAME_START;
 							}
 						}
@@ -156,14 +157,38 @@ public class GameServer implements Runnable, Constants{
 						  int y = Integer.parseInt(playerInfo[3].trim());
 						  //Get the player from the game state
 						  NetPlayer player=(NetPlayer)game.getPlayers().get(pname);					  
-						  player.setX(x);
-						  player.setY(y);
+						  player.setRemainingClass(x);
+						  player.setRemaining(y);
 						  //Update the game state
 						  game.update(pname, player);
 						  //Send to all the updated game state
 						  broadcast(game.toString());
 					  }
+					  if(playerData.startsWith("WINNER")){
+						  String[] playerInfo = playerData.split(" ");					  
+						  String pname =playerInfo[1];
+						  String winner = playerInfo[2];
+						  NetPlayer player=(NetPlayer)game.getPlayers().get(pname);					  
+						  player.setWinner(winner);
+						  //Update the game state
+						  game.update(pname, player);
+						  //Send to all the updated game state
+						  broadcast(game.declareWinner());
+					  }
 					  break;
+				  /*case GAME_END:
+					  if(playerData.startsWith("WINNER")){
+						  String[] playerInfo = playerData.split(" ");					  
+						  String pname =playerInfo[1];
+						  String winner = playerInfo[2];
+						  NetPlayer player=(NetPlayer)game.getPlayers().get(pname);					  
+						  player.setWinner(winner);
+						  //Update the game state
+						  game.update(pname, player);
+						  //Send to all the updated game state
+						  broadcast(game.declareWinner());
+					  }
+					  break;*/
 			}				  
 		}
 	}	

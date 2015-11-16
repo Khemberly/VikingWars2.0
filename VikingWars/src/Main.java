@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -32,8 +33,9 @@ public class Main implements Constants{
 	protected static ArrayList<String> playerNames = new ArrayList<String>();
 	protected static String thisPlayer;
 	protected static String host;
+	protected static Game game;
 	
-	public static int gameState = WAITING_FOR_PLAYERS;
+	public static int gameState = GAME_START;
 	
 	//creates main window
 	public static void main(String args[]){
@@ -73,10 +75,17 @@ public class Main implements Constants{
 						 cl.show(panel, "");
 					     thisPlayer = start.enterPlayerName.getText();
 					     host = start.enterHostName.getText();
-					     System.out.println(host);
+					     //System.out.println(host);
 					     playerNames.add(thisPlayer);
 					     ChatUI client = new ChatUI(host, 1500, thisPlayer);
 					     mainGamePanel.add(client);
+						try {
+							game = new Game();
+							 mainGamePanel.add(game);
+						} catch (SocketException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					     //GameServer gs = new GameServer();
 					     //ChatServer cs = new ChatServer();
 					 //}
@@ -84,9 +93,9 @@ public class Main implements Constants{
 			}
 		});
 		Menu menu = new Menu();
-		Game game = new Game();
+		//Game game = new Game();
 		mainGamePanel.add(menu);
-		mainGamePanel.add(game);
+		//mainGamePanel.add(game);
 		mainGamePanel.setBorder(new EmptyBorder(5,5,5,5));
 		frame.setContentPane(panel);
 		frame.setVisible(true);

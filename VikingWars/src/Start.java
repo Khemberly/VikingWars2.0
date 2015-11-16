@@ -17,6 +17,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 
-public class Start extends JPanel{
+public class Start extends JPanel implements Constants{
 	
 	JButton startButton = new JButton("Start game");
 	Container container = new Container();
@@ -40,6 +43,8 @@ public class Start extends JPanel{
 	JLabel hostName = new JLabel("Host: ");
 	JLabel portNum = new JLabel("Port: ");
 	static JLabel playerStatus = new JLabel("");
+	
+	int gameStage = WAITING_FOR_PLAYERS;
 	
 	public Start(){
 		setBackground(new Color(230, 230, 250));
